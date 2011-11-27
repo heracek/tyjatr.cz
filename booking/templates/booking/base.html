@@ -18,16 +18,16 @@
         font-size: 15px;
         font-weight: bold;
       }
-      .rezervace {
+      .booking {
         widht: 600px;
       }
-      .rezervace th {
+      .booking th {
         font-weight: normal;
         text-align: left;
         vertical-align: bottom;
         width: 129px;
       }
-      .rezervace td {
+      .booking td {
         width: 461px;
       }
       -->
@@ -36,8 +36,8 @@
   <body>
     <form method="post" action=".">
       {% csrf_token %}
-      <table class="rezervace" border="0">
-        {{ reserve_tickets_form }}
+      <table class="booking" border="0">
+        {{ book_tickets_form }}
       </table>
       <input type="submit" value="rezervovat" />
     </form>

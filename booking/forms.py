@@ -42,7 +42,7 @@ NUMBER_OF_TICKETS_CHOICES = (
     ('5', '5'),
 )
 
-class ReserveTicketsForm(forms.Form):
+class BookTicketsForm(forms.Form):
     show = forms.ChoiceField(label=u'Představení', choices=SHOW_CHOICES)
     name = forms.CharField(label=u'Vaše jméno')
     email = forms.EmailField(label=u'Váš e-mail')
