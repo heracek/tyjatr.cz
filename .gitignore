@@ -1,3 +1,4 @@
 .DS_Strore
 *.pyc
 settings.py
+*.db
