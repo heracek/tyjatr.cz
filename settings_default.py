@@ -1,5 +1,7 @@
 # Django settings for tyjatr project.
 from os.path import abspath, dirname, join
+gettext = lambda s: s
+
 PROJECT_PATH = abspath(dirname(__file__))
 
 DEBUG = True
@@ -34,6 +36,10 @@ TIME_ZONE = 'America/Chicago'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'cs'
+
+LANGUAGES = (
+    ('cs', gettext('Czech')),
+)
 
 SITE_ID = 1
 

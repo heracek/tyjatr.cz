@@ -1,36 +1,22 @@
 # -*- coding: utf-8 -*-
+import datetime
 from django import forms
 
-SHOW_CHOICES = (
-    ('', u'vyberte představení'),
-    (u'LISTOPAD', [(show, show) for show in (
-        u'3. 11. Romeo a Julie',
-        u'4. 11. Stráže! Stráže!',
-        u'6. 11. Viking Vike',
-        u'9. 11. Experiment',
-        u'14. 11. Blázníček a Jeleňovití',
-        u'15. 11. Tři mušketýři',
-        u'16. 11. Frank Pátý',
-        u'20. 11. Dr. Jekyll a Mr. Hyde',
-        u'21. 11. Romeo a Julie',
-        u'24. 11. Dr. Jekyll a Mr. Hyde',
-        u'29. 11. Don Juan',
-        u'30. 11. A nezbyl ani jeden',
-    )]),
-    (u'PROSINEC', [(show, show) for show in (
-        u'2. 12. Romeo a Julie',
-        u'4. 12. Rakovnická hra vánoční',
-        u'6. 12. Nesem vám noviny',
-        u'7. 12. Tři mušketýři',
-        u'8. 12. Dr. Jekyll a Mr. Hyde',
-        u'12. 12. Raskolnikov',
-        u'13. 12. A nezbyl ani jeden',
-        u'14. 12. Experiment',
-        u'15. 12. Nesem vám noviny',
-        u'18. 12. Stráže! Stráže!',
-        u'19. 12. Romeo a Julie',
-        u'21. 12. Dr. Jekyll a Mr. Hyde',
-    )]),
+from schedule.models import ScheduledShow
+
+MONTH_NAMES = (
+    u'leden',
+    u'únor',
+    u'březen',
+    u'duben',
+    u'květen',
+    u'červen',
+    u'červenec',
+    u'srpen',
+    u'září',
+    u'říjen',
+    u'listopad',
+    u'prosinec',
 )
 
 NUMBER_OF_TICKETS_CHOICES = (
@@ -43,7 +29,36 @@ NUMBER_OF_TICKETS_CHOICES = (
 )
 
 class BookTicketsForm(forms.Form):
-    show = forms.ChoiceField(label=u'Představení', choices=SHOW_CHOICES)
+    show = forms.ModelChoiceField(label=u'Představení', queryset=ScheduledShow.objects.all())
     name = forms.CharField(label=u'Vaše jméno')
     email = forms.EmailField(label=u'Váš e-mail')
     number_of_tickets = forms.ChoiceField(label=u'Počet vstupenek', choices=NUMBER_OF_TICKETS_CHOICES)
+    
+    def __init__(self, *args, **kwargs):
+        super(BookTicketsForm, self).__init__(*args, **kwargs)
+        self.autoset_show_choices()
+    
+    def autoset_show_choices(self):
+        today = datetime.date.today()
+        midnite_today = datetime.datetime(
+            year=today.year,
+            month=today.month,
+            day=today.day,
+            hour=23,
+            minute=59,
+            second=59,
+        )
+        
+        choices = [('', u'vyberte představení')]
+        last_month = None
+        last_month_shows = []
+        
+        for show in ScheduledShow.objects.filter(date__gt=midnite_today):
+            if last_month != show.date.month:
+                last_month = show.date.month
+                last_month_shows = []
+                choices.append((MONTH_NAMES[show.date.month - 1].upper(), last_month_shows))
+            last_month_shows.append((show.pk, unicode(show)))
+        
+        self.fields['show'].choices = choices
+    

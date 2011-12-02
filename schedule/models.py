@@ -15,5 +15,6 @@ class ScheduledShow(models.Model):
         verbose_name_plural = u'Představení na pragramu'
     
     def __unicode__(self):
-        return u'%s %s - %s' % (self.date, self.time, self.show)
+        return u'%s. %s. %s' % (
+            self.date.day, self.date.month, self.show)#, self.time.strftime('%H:%M'))
     
