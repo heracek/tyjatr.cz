@@ -7,6 +7,8 @@ from django.template import RequestContext
 from forms import BookTicketsForm
 from models import Booking
 
+BOOKING_ADMIN_EMAIL = 'lucijeval@seznam.cz'
+
 BOOKING_ADMIN_MAIL = u'''%(show)s
  > Na jméno: %(name)s
  > Pocet vstupenek: %(number_of_tickets)s
@@ -42,7 +44,7 @@ def book_tickets(request):
                 subject=u'Rezervace: %s' % booking.scheduled_show,
                 message=BOOKING_ADMIN_MAIL % form.cleaned_data,
                 from_email='rezervace-neodpovidat@ty-ja-tr.cz',
-                recipient_list=['lucijeval@seznam.cz'],
+                recipient_list=[BOOKING_ADMIN_EMAIL],
                 fail_silently=False
             )
             
