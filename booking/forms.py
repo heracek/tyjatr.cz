@@ -53,7 +53,7 @@ class BookTicketsForm(forms.Form):
         last_month = None
         last_month_shows = []
         
-        for show in ScheduledShow.objects.filter(date__gt=midnite_today, active=True):
+        for show in ScheduledShow.objects.filter(date__gt=midnite_today, can_be_booked=True):
             if last_month != show.date.month:
                 last_month = show.date.month
                 last_month_shows = []

@@ -3,16 +3,16 @@ from django.contrib import admin
 
 from models import ScheduledShow
 
-def activate_scheduled_shows(modeladmin, request, queryset):
-    queryset.update(active=True)
-activate_scheduled_shows.short_description = u'Aktivuj'
+def activate_can_be_booked_scheduled_shows(modeladmin, request, queryset):
+    queryset.update(can_be_booked=True)
+activate_can_be_booked_scheduled_shows.short_description = u'Zapni rezervace'
 
-def deactivate_scheduled_shows(modeladmin, request, queryset):
-    queryset.update(active=False)
-deactivate_scheduled_shows.short_description = u'Deaktivuj'
+def deactivate_can_be_booked_scheduled_shows(modeladmin, request, queryset):
+    queryset.update(can_be_booked=False)
+deactivate_can_be_booked_scheduled_shows.short_description = u'Vypni rezervace'
 
 class ScheduledShowAdmin(admin.ModelAdmin):
-    list_display = ('date', 'show', 'time', 'active')
-    list_filter = ('date', 'show', 'active')
-    actions = [activate_scheduled_shows, deactivate_scheduled_shows]
+    list_display = ('date', 'show', 'time', 'can_be_booked')
+    list_filter = ('date', 'show', 'can_be_booked')
+    actions = [activate_can_be_booked_scheduled_shows, deactivate_can_be_booked_scheduled_shows]
 admin.site.register(ScheduledShow, ScheduledShowAdmin)
