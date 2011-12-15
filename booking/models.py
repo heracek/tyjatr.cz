@@ -10,3 +10,13 @@ class Booking(models.Model):
     email = models.EmailField()
     number_of_tickets = models.IntegerField(u'počet lístků')
     time_of_booking = models.DateTimeField(u'čas zarezervování', default=datetime.datetime.now)
+    
+    class Meta:
+        ordering = ['time_of_booking']
+        verbose_name = u'Rezervace'
+        verbose_name_plural = u'Rezervace'
+    
+    def __unicode__(self):
+        return u'Rezervace představení "%s" na jméno "%s" a počet lístků: %d' % (
+            self.scheduled_show, self.name, self.number_of_tickets
+        )

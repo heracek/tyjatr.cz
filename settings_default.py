@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'shows',
     'schedule',
     'booking',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging

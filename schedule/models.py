@@ -8,6 +8,7 @@ class ScheduledShow(models.Model):
     show = models.ForeignKey(Show, verbose_name=u'prědstavení')
     date = models.DateField(u'datum', default=datetime.datetime.now)
     time = models.TimeField(u'čas', default=datetime.time(19, 30))
+    active = models.BooleanField(u'aktivní', blank=True)
     
     class Meta:
         ordering = ['date', 'time']
