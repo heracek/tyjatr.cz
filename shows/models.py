@@ -6,8 +6,8 @@ class Show(models.Model):
     
     class Meta:
         ordering = ['name']
-        verbose_name = u'Představení'
-        verbose_name_plural = u'Představení'
+        verbose_name = u'představení'
+        verbose_name_plural = u'představení'
     
     def __unicode__(self):
         return self.name

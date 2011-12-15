@@ -12,8 +12,8 @@ class ScheduledShow(models.Model):
     
     class Meta:
         ordering = ['date', 'time']
-        verbose_name = u'Představení na programu'
-        verbose_name_plural = u'Představení na pragramu'
+        verbose_name = u'představení na programu'
+        verbose_name_plural = u'představení na pragramu'
     
     def __unicode__(self):
         return u'%s. %s. %s' % (

@@ -13,8 +13,8 @@ class Booking(models.Model):
     
     class Meta:
         ordering = ['time_of_booking']
-        verbose_name = u'Rezervace'
-        verbose_name_plural = u'Rezervace'
+        verbose_name = u'rezervace'
+        verbose_name_plural = u'rezervace'
     
     def __unicode__(self):
         return u'Rezervace představení "%s" na jméno "%s" a počet lístků: %d' % (
