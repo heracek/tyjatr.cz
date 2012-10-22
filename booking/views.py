@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.db.models import Sum
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.generic import TemplateView
+
+from schedule.models import ScheduledShow
 
 from forms import BookTicketsForm
 from models import Booking
@@ -65,3 +69,16 @@ def book_tickets(request):
     return render_to_response('booking/base.html', {
         'book_tickets_form': form,
     }, context_instance=RequestContext(request))
+
+
+class ScheduledShowsBookingOverview(TemplateView):
+    template_name = 'booking/sheduled_shows.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduledShowsBookingOverview, self).get_context_data(**kwargs)
+        context['scheduled_shows'] = self.scheduled_shows()
+        return context
+
+    def scheduled_shows(self):
+        return ScheduledShow.objects.annotate(sum_reservations=Sum('booking__number_of_tickets'))
+
