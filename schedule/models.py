@@ -18,4 +18,7 @@ class ScheduledShow(models.Model):
     def __unicode__(self):
         return u'%s. %s. %s' % (
             self.date.day, self.date.month, self.show)#, self.time.strftime('%H:%M'))
-    
+
+    def total_number_or_reservations(self):
+        return self.booking_set.aggregate(sum=models.Sum('number_of_tickets'))['sum']
+

@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.db.models import Sum
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic import TemplateView
+from django.views.generic import DetailView, TemplateView
 
 from schedule.models import ScheduledShow
 
@@ -81,4 +81,8 @@ class ScheduledShowsBookingOverview(TemplateView):
 
     def scheduled_shows(self):
         return ScheduledShow.objects.annotate(sum_reservations=Sum('booking__number_of_tickets'))
+
+class BookingsForScheduledShowOverview(DetailView):
+    model = ScheduledShow
+    template_name = 'booking/sheduled_shows_details.html'
 

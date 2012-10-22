@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="../">&larr; Zpět</a>
+    <h2>{{ scheduledshow }}</h2>
+    <table border="1">
+        <tr>
+            <th>Počet</th>
+            <th>Jméno</th>
+            <th>Email</th>
+        </tr>
+        {% for booking in scheduledshow.booking_set.all %}
+            <tr>
+                <td>{{ booking.number_of_tickets }}</td>
+                <td>{{ booking.name }}</td>
+                <td>{{ booking.email }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td><strong>{{ scheduledshow.total_number_or_reservations }}</strong></td>
+            <td colspan="2"><strong>Celkem</strong></td>
+        </tr>
+   </table>
+{% endblock %}

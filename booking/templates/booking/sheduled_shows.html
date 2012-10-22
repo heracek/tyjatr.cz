@@ -3,9 +3,13 @@
 {% block content %}
     <h2>Přehled rezervací</h2>
     <table>
+        <tr>
+            <th>Představení</th>
+            <th>Rezervací</th>
+        </tr>
         {% for show in  scheduled_shows %}
             <tr>
-                <td>{{ show }}</td>
+                <td><a href="{% url bookings-for-schedules-show-overview show.pk %}">{{ show }}</a></td>
                 <td>{{ show.sum_reservations|default_if_none:"0" }}</td>
             </tr>
         {% endfor %}
