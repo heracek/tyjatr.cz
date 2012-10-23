@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.mail import send_mail
 from django.db.models import Sum
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView
+
+import datetime
 
 from schedule.models import ScheduledShow
 
@@ -72,7 +76,7 @@ def book_tickets(request):
 
 
 class ScheduledShowsBookingOverview(TemplateView):
-    template_name = 'booking/sheduled_shows.html'
+    template_name = 'booking/scheduled_shows.html'
 
     def get_context_data(self, **kwargs):
         context = super(ScheduledShowsBookingOverview, self).get_context_data(**kwargs)
@@ -80,9 +84,19 @@ class ScheduledShowsBookingOverview(TemplateView):
         return context
 
     def scheduled_shows(self):
-        return ScheduledShow.objects.annotate(sum_reservations=Sum('booking__number_of_tickets'))
+        time_delta = datetime.timedelta(days=3)
+        three_days_ago = datetime.datetime.now() - time_delta
+        return ScheduledShow.objects.filter(date__gte=three_days_ago).annotate(sum_reservations=Sum('booking__number_of_tickets'))
+    
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.is_active))
+    def dispatch(self, *args, **kwargs):
+        return super(ScheduledShowsBookingOverview, self).dispatch(*args, **kwargs)
 
 class BookingsForScheduledShowOverview(DetailView):
     model = ScheduledShow
-    template_name = 'booking/sheduled_shows_details.html'
+    template_name = 'booking/scheduled_shows_details.html'
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.is_active))
+    def dispatch(self, *args, **kwargs):
+        return super(BookingsForScheduledShowOverview, self).dispatch(*args, **kwargs)
 
