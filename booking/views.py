@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, TemplateView
 
 import datetime
+import math
 
 from schedule.models import ScheduledShow
 
@@ -99,4 +100,28 @@ class BookingsForScheduledShowOverview(DetailView):
     @method_decorator(user_passes_test(lambda u: u.is_superuser and u.is_active))
     def dispatch(self, *args, **kwargs):
         return super(BookingsForScheduledShowOverview, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(BookingsForScheduledShowOverview, self).get_context_data(**kwargs)
+
+        scheduled_show = context['scheduledshow']
+        bookings = scheduled_show.booking_set.all()
+
+        numbered_bookings = []
+        last_booking_number = 0
+        for booking in bookings:
+            for i in range(booking.number_of_tickets):
+                last_booking_number += 1
+                numbered_bookings.append({
+                    'name': booking.name,
+                    'booking_number': last_booking_number,
+                })
+
+        first_columns_length = int(math.ceil(len(numbered_bookings) / 2.))
+        first_columns = numbered_bookings[0:first_columns_length]
+        second_columns = numbered_bookings[first_columns_length:]
+        zipped_columns = map(None, first_columns, second_columns)
+
+        context['zipped_columns'] = zipped_columns
+        return context
 

@@ -3,22 +3,27 @@
 {% block content %}
     <a href="{% url scheduled-shows-booking-overview %}">&larr; Zpět</a>
     <h2>{{ scheduledshow }}</h2>
-    <table border="1">
+    <table width="100%">
         <tr>
-            <th>Počet</th>
-            <th>Jméno</th>
-            <th>Email</th>
+            <th width="3%">&nbsp;</th>
+            <th width="47%">&nbsp;</th>
+            <th width="3%">&nbsp;</th>
+            <th width="47%">&nbsp;</th>
         </tr>
-        {% for booking in scheduledshow.booking_set.all %}
+        {% for row in zipped_columns %}
             <tr>
-                <td>{{ booking.number_of_tickets }}</td>
-                <td>{{ booking.name }}</td>
-                <td>{{ booking.email }}</td>
+                {% for column in row %}
+                    <td>
+                        {{ column.booking_number|stringformat:'d.' }}
+                    </td>
+                    <td>
+                        {{ column.name }}
+                    </td>
+               {% endfor %}
             </tr>
         {% endfor %}
-        <tr>
-            <td><strong>{{ scheduledshow.total_number_or_reservations }}</strong></td>
-            <td colspan="2"><strong>Celkem</strong></td>
-        </tr>
    </table>
+   <p>
+       <strong>Celkem {{ scheduledshow.total_number_or_reservations|default:0 }}</strong>
+    </p>
 {% endblock %}
