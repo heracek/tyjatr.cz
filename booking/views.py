@@ -16,7 +16,7 @@ from schedule.models import ScheduledShow
 from forms import BookTicketsForm
 from models import Booking
 
-BOOKING_ADMIN_EMAIL = 'lucijeval@seznam.cz'
+#BOOKING_ADMIN_EMAIL = 'lucijeval@seznam.cz'
 
 BOOKING_ADMIN_MAIL = u'''%(show)s
  > Na jméno: %(name)s
@@ -49,13 +49,13 @@ def book_tickets(request):
             booking.email = form.cleaned_data['email']
             booking.number_of_tickets = form.cleaned_data['number_of_tickets']
             
-            send_mail(
-                subject=u'Rezervace: %s' % booking.scheduled_show,
-                message=BOOKING_ADMIN_MAIL % form.cleaned_data,
-                from_email='rezervace-neodpovidat@ty-ja-tr.cz',
-                recipient_list=[BOOKING_ADMIN_EMAIL],
-                fail_silently=False
-            )
+#            send_mail(
+#                subject=u'Rezervace: %s' % booking.scheduled_show,
+#                message=BOOKING_ADMIN_MAIL % form.cleaned_data,
+#                from_email='rezervace-neodpovidat@ty-ja-tr.cz',
+#                recipient_list=[BOOKING_ADMIN_EMAIL],
+#                fail_silently=False
+#            )
             
             send_mail(
                 subject=u'Rezervace: %s' % booking.scheduled_show,
