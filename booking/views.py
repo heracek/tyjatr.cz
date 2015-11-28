@@ -48,7 +48,7 @@ def book_tickets(request):
             booking.name = form.cleaned_data['name']
             booking.email = form.cleaned_data['email']
             booking.number_of_tickets = form.cleaned_data['number_of_tickets']
-            
+
 #            send_mail(
 #                subject=u'Rezervace: %s' % booking.scheduled_show,
 #                message=BOOKING_ADMIN_MAIL % form.cleaned_data,
@@ -56,7 +56,7 @@ def book_tickets(request):
 #                recipient_list=[BOOKING_ADMIN_EMAIL],
 #                fail_silently=False
 #            )
-            
+
             send_mail(
                 subject=u'Rezervace: %s' % booking.scheduled_show,
                 message=BOOKING_USER_MAIL % form.cleaned_data,
@@ -64,9 +64,9 @@ def book_tickets(request):
                 recipient_list=[booking.email],
                 fail_silently=False
             )
-            
+
             booking.save()
-            
+
             messages.success(request, u'Děkujeme. Potvrzení bylo odesláno na váš email.')
             form = BookTicketsForm()
     else:
@@ -88,7 +88,7 @@ class ScheduledShowsBookingOverview(TemplateView):
         time_delta = datetime.timedelta(days=3)
         three_days_ago = datetime.datetime.now() - time_delta
         return ScheduledShow.objects.filter(date__gte=three_days_ago).annotate(sum_reservations=Sum('booking__number_of_tickets'))
-    
+
     @method_decorator(user_passes_test(lambda u: u.is_superuser and u.is_active))
     def dispatch(self, *args, **kwargs):
         return super(ScheduledShowsBookingOverview, self).dispatch(*args, **kwargs)
@@ -116,6 +116,8 @@ class BookingsForScheduledShowOverview(DetailView):
                     'name': booking.name,
                     'booking_number': last_booking_number,
                 })
+
+        context['all_emails'] = [booking.email for booking in bookings]
 
         first_columns_length = int(math.ceil(len(numbered_bookings) / 2.))
         first_columns = numbered_bookings[0:first_columns_length]

@@ -25,5 +25,8 @@
    </table>
    <p>
        <strong>Celkem {{ scheduledshow.total_number_or_reservations|default:0 }}</strong>
-    </p>
+   </p>
+   <p class="hide-print">
+       <strong><a href="mailto:{{ all_emails|join:', ' }}?subject={{scheduledshow}}">Napsat email všem v tomto seznamu</a></strong>
+   </p>
 {% endblock %}
